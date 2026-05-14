@@ -1,0 +1,59 @@
+@model Libraro.Models.Urun
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card border-0 shadow-sm p-4">
+                <img src="@Model.ResimYolu" class="img-fluid rounded" alt="@Model.Ad" 
+                     style="max-height: 500px; object-fit: contain;">
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <h1 class="display-5 font-weight-bold">@Model.Ad</h1>
+
+            @if (Model is Libraro.Models.Kitap kitap)
+            {
+                <h3 class="text-muted mb-4">@kitap.Yazar</h3>
+            }
+            else if (Model is Libraro.Models.Puzzle puzzle)
+            {
+                <h3 class="text-muted mb-4">@puzzle.Marka - @puzzle.ParcaSayisi Parça</h3>
+            }
+
+            <hr>
+
+            <div class="price-section my-4">
+                <h2 class="text-danger font-weight-bold">@Model.Fiyat.ToString("C2")</h2>
+                <p class="text-success small"><i class="fas fa-check-circle"></i> Stokta Var</p>
+            </div>
+
+            <div class="description mb-4">
+                <p class="text-secondary" style="line-height: 1.8;">
+                    @(string.IsNullOrEmpty((Model as dynamic).Aciklama) ? "Bu ürün için henüz bir açıklama girilmemiştir." : (Model as dynamic).Aciklama)
+                </p>
+            </div>
+
+            <div class="attributes bg-light p-3 rounded mb-4">
+                <h5 class="font-weight-bold mb-3">Ürün Özellikleri</h5>
+                <ul class="list-unstyled mb-0">
+                    @if (Model is Libraro.Models.Kitap k)
+                    {
+                        <li class="mb-2"><strong>Yayınevi:</strong> @k.Yayinevi</li>
+                        <li class="mb-2"><strong>Sayfa Sayısı:</strong> @k.SayfaSayisi</li>
+     
+                    }
+                    else if (Model is Libraro.Models.Puzzle p)
+                    {
+                        <li class="mb-2"><strong>Marka:</strong> @p.Marka</li>
+                        <li class="mb-2"><strong>Parça Sayısı:</strong> @p.ParcaSayisi Parça</li>
+                    }
+                </ul>
+            </div>
+
+            <a href="/Sepet/Ekle/@Model.Id" class="btn btn-danger btn-lg px-5 rounded-pill shadow-sm">
+                <i class="fas fa-shopping-cart mr-2"></i> Sepete Ekle
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,176 @@
+﻿@model List<Libraro.Models.Urun>
+@{
+    ViewData["Title"] = ViewData["Title"] ?? "Home Page";
+}
+
+@if (ViewData["Title"]?.ToString() == "Home Page")
+{
+    <div class="hero-section position-relative mb-5 mt-4" style="background-color: #f8f9fa;">
+    <div class="container-fluid p-0 text-center">
+        <img src="/img/afis.png" class="img-fluid" alt="Libraro Slogan"
+            style="max-height: 70vh; width: 100%; object-fit: contain;">
+        <div class="position-absolute w-100 d-flex justify-content-center" style="bottom: 15%;">
+            <a href="/Home/Kategori/Edebiyat" class="btn btn-outline-dark px-4 rounded-pill shadow-sm" 
+   style="border-width: 2px; font-weight: 500;">
+   Keşfetmeye Başla
+</a>
+            
+        </div>
+    </div>
+</div>
+}
+else
+{
+    <div class="container mt-4">
+    <h2 class="font-weight-bold text-center border-bottom pb-3">@ViewData["Title"]</h2>
+</div>
+}
+<div class="container mt-5">
+    <h4 class="text-center font-weight-bold mb-4">
+    @{
+        string baslik = "Öne Çıkan Kitaplar";
+        var currentTitle = ViewData["Title"]?.ToString();
+
+        if (currentTitle != null && (currentTitle.Contains("Puzzle") || currentTitle.Contains("500") || currentTitle.Contains("1000") || currentTitle.Contains("2000") || currentTitle.Contains("3000")))
+        {
+            baslik = "Çok Satanlar";
+        }
+        else if (currentTitle == "Home Page")
+        {
+            baslik = "Çok Satanlar";
+        }
+        
+        @baslik
+    }
+</h4>
+
+    <div id="kitapSlider" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Take(6).Count(); i += 3)
+            {
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <div class="row">
+                        @foreach (var urun in Model.Take(6).Skip(i).Take(3))
+{
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+            <a href="/Home/Detay/@urun.Id">
+                <img src="@urun.ResimYolu" class="card-img-top" alt="@urun.Ad" style="height:150px; object-fit: contain;">
+            </a>
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    <a href="/Home/Detay/@urun.Id" class="text-dark" style="text-decoration:none;">@urun.Ad</a>
+                </h5>
+
+                @if (urun is Libraro.Models.Kitap k)
+                {
+                    <p class="card-text text-muted">@k.Yayinevi</p>
+                    <p class="card-text"><strong>@k.Yazar</strong></p>
+                }
+                else if (urun is Libraro.Models.Puzzle p)
+                {
+                    <p class="card-text text-muted">@p.Marka</p>
+                    <p class="card-text"><strong>@p.ParcaSayisi Parça</strong></p>
+                }
+
+                <h4 class="text-primary">@urun.Fiyat.ToString("C2")</h4>
+                <form asp-action="FavoriGuncelle" asp-controller="Home" method="post" class="mt-2">
+    <input type="hidden" name="id" value="@urun.Id" />
+    <button type="submit" class="btn w-100 @(urun.IsFavorite ? "btn-warning" : "btn-outline-warning")">
+        @(urun.IsFavorite ? "★ Favorilerde" : "☆ Favoriye Ekle")
+    </button>
+</form>
+<a href="/Sepet/Ekle/@(urun.Id)" class="btn btn-danger w-100 mt-2">Sepete Ekle</a>
+                
+            </div>
+        </div>
+    </div>
+}
+                    </div>
+                </div>
+            }
+        </div>
+    
+    <div class="d-flex justify-content-center mt-2">
+        <ol class="carousel-indicators position-relative m-0 p-0" style="bottom: 0;">
+            <li data-target="#kitapSlider" data-slide-to="0" class="active"></li>
+            <li data-target="#kitapSlider" data-slide-to="1"></li>
+        </ol>
+    
+</div>
+</div>
+
+<div class="container mt-5 pt-5 border-top">
+    <h4 class="font-weight-bold mb-4 text-center">Tüm Ürünler</h4>
+    <div class="row">
+        @foreach (var urun in Model)
+{
+    <div class="col-6 col-md-4 col-lg-3 mb-4">
+        <div class="card h-100 border-0 shadow-sm text-center p-2" style="border-radius: 15px;">
+            <a href="/Home/Detay/@urun.Id">
+                <img src="@urun.ResimYolu" class="card-img-top" alt="@urun.Ad" style="height:180px; object-fit: contain;">
+            </a>
+            <div class="card-body px-1">
+                <h6 class="card-title font-weight-bold text-truncate">
+                    <a href="/Home/Detay/@urun.Id" class="text-dark" style="text-decoration:none;">@urun.Ad</a>
+                </h6>
+
+                @if (urun is Libraro.Models.Kitap kitap)
+                {
+                    <p class="small text-muted mb-1">@kitap.Yayinevi</p>
+                    <p class="small mb-2">@kitap.Yazar</p>
+                }
+                else if (urun is Libraro.Models.Puzzle puzzle)
+                {
+                    <p class="small text-muted mb-1">@puzzle.Marka</p>
+                    <p class="small mb-2">@puzzle.ParcaSayisi Parça</p>
+                }
+
+                <h5 class="text-danger font-weight-bold">@urun.Fiyat.ToString("C2")</h5>
+                <form asp-action="FavoriGuncelle" asp-controller="Home" method="post" class="mb-2">
+    <input type="hidden" name="id" value="@urun.Id" />
+    <button type="submit" class="btn btn-sm w-100 rounded-pill @(urun.IsFavorite ? "btn-warning" : "btn-outline-warning")">
+        @(urun.IsFavorite ? "★ Favorilerde" : "☆ Favoriye Ekle")
+    </button>
+</form>
+<a href="/Sepet/Ekle/@(urun.Id)" class="btn btn-danger btn-sm w-100 rounded-pill">Sepete Ekle</a>
+            </div>
+        </div>
+    </div>
+}
+    </div>
+</div>
+
+@if (ViewData["Title"]?.ToString() == "Home Page")
+{
+    <div class="container my-5 py-5 clearfix">
+    <h4 class="text-center font-weight-bold mb-4">Popüler Yayınevleri</h4>
+    <div class="row text-center align-items-center">
+
+        <div class="col-6 col-md-2 mb-4">
+            <img src="/img/yayinlar/isbankasi.webp" class="img-fluid grayscale-hover" style="max-height: 100px;"
+                alt="İş Bankası Yayınları">
+        </div>
+        <div class="col-6 col-md-2 mb-4">
+            <img src="/img/yayinlar/can.webp" class="img-fluid grayscale-hover" style="max-height: 100px;"
+                alt="Can Yayınları">
+        </div>
+        <div class="col-6 col-md-2 mb-4">
+            <img src="/img/yayinlar/marti.jpg" class="img-fluid grayscale-hover" style="max-height: 100px;"
+                alt="Martı Yayınları">
+        </div>
+        <div class="col-6 col-md-2 mb-4">
+            <img src="/img/yayinlar/indigo.webp" class="img-fluid grayscale-hover" style="max-height: 100px;"
+                alt="İndigo Yayınları">
+        </div>
+        <div class="col-6 col-md-2 mb-4">
+            <img src="/img/yayinlar/yapi.jpeg" class="img-fluid grayscale-hover" style="max-height: 100px;"
+                alt="Yapı Kredi Yayınları">
+        </div>
+        <div class="col-6 col-md-2 mb-4">
+            <img src="/img/yayinlar/epsilon.webp" class="img-fluid grayscale-hover" style="max-height: 100px;"
+                alt="Epsilon Yayınları">
+        </div>
+    </div>
+</div>
+}
