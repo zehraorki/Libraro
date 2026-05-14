@@ -9,13 +9,13 @@ Kullanılan Teknolojiler:
 Bu proje Nesne Yönelimli Programlama dersi kapsamında geliştirilmiştir.
 
 Bu proje ;
--En az 5 sınıf içermelidir,
--Encapsulation, inheritance ve polymorphism kullanılmalıdır,
--Uygulama modüler ve genişletilebilir olmalıdır,
--Exception handling mekanizması içermelidir,
--Kodlar nesne yönelimli tasarım prensiplerine uygun olmalıdır, şeklinde belirtilen teknik şartları karşılar.
+*En az 5 sınıf içermelidir,
+*Encapsulation, inheritance ve polymorphism kullanılmalıdır,
+*Uygulama modüler ve genişletilebilir olmalıdır,
+*Exception handling mekanizması içermelidir,
+*Kodlar nesne yönelimli tasarım prensiplerine uygun olmalıdır, şeklinde belirtilen teknik şartları karşılar.
 
 Bu proje ;
--CRUD işlemleri desteklenmelidir,
--Kullanıcı etkileşimi sağlanmalıdır, 
--Veri saklama mekanizması içermelidir , şeklinde belirtilen fonksiyonel şartları karşılar.
+*CRUD işlemleri desteklenmelidir,
+*Kullanıcı etkileşimi sağlanmalıdır, 
+*Veri saklama mekanizması içermelidir , şeklinde belirtilen fonksiyonel şartları karşılar.
